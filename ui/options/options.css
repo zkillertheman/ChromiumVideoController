@@ -232,6 +232,19 @@ section {
   font-size: 13px;
 }
 
+.shortcut-groups {
+  display: grid;
+  gap: 18px;
+}
+
+.shortcut-group h4 {
+  margin: 0 0 10px;
+  color: var(--md-on-surface-variant);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 /* Material Design form elements */
 .row {
   margin: 20px 0;
@@ -813,63 +826,6 @@ button:focus-visible {
 }
 .css-validation.warn {
   color: #f57c00;
-}
-
-#panel-faq section {
-  margin-top: 0;
-}
-
-/* FAQ table of contents */
-.faq-toc {
-  margin: 0 0 12px;
-  padding-left: 20px;
-  font-size: 13px;
-  line-height: 1.8;
-}
-
-.faq-toc a {
-  color: var(--md-primary);
-  text-decoration: none;
-}
-
-.faq-toc a:hover {
-  text-decoration: underline;
-}
-
-#faq hr {
-  border: none;
-  border-top: 1px solid var(--md-outline-variant);
-  margin: 0 0 16px;
-}
-
-/* FAQ section */
-#faq {
-  margin-top: 0;
-  padding: 16px 24px;
-  background-color: var(--md-surface-variant);
-  border-radius: 12px;
-}
-
-#faq h4 {
-  margin-top: 0;
-  margin-bottom: 12px;
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--md-on-surface);
-}
-
-#faq p {
-  margin: 8px 0;
-  font-size: 14px;
-  color: var(--md-on-surface-variant);
-}
-
-#faq code {
-  padding: 2px 6px;
-  background-color: var(--md-surface);
-  border-radius: 4px;
-  font-size: 13px;
-  color: var(--md-primary);
 }
 
 /* Responsive adjustments */

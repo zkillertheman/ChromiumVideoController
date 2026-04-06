@@ -1370,7 +1370,7 @@ meet.google.com`.replace(e, ""),
           (t.value = t.value.trim() === "" || t.value === "0" ? se(o, s) : t.value)));
   }
   function B(e = {}) {
-    let o = document.getElementById("shortcuts-container"),
+    let o = document.getElementById("other-shortcuts-container"),
       t = u(o, I, e, { className: "customs", removable: !0 }),
       n = e.action || t.querySelector(".customDo").value;
     return (
@@ -1380,8 +1380,13 @@ meet.google.com`.replace(e, ""),
       t
     );
   }
+  function le(e) {
+    return e.startsWith("chapterSkip") || ["chapterPrevious", "chapterNext"].includes(e);
+  }
   function H(e) {
-    let o = document.getElementById("shortcuts-container"),
+    let o = document.getElementById(
+        le(e.action) ? "chapter-shortcuts-container" : "other-shortcuts-container",
+      ),
       t = u(
         o,
         I,
@@ -1551,10 +1556,10 @@ meet.google.com`.replace(e, ""),
         .querySelectorAll(".row.site-rule")
         .forEach((r) => r.remove());
       for (let r of o) x(r);
-      let n =
-          e.keyBindings || window.VSC.Constants.DEFAULT_SETTINGS.keyBindings,
-        s = document.getElementById("shortcuts-container");
-      s.innerHTML = "";
+      let n = e.keyBindings || window.VSC.Constants.DEFAULT_SETTINGS.keyBindings,
+        s = document.getElementById("chapter-shortcuts-container"),
+        r = document.getElementById("other-shortcuts-container");
+      ((s.innerHTML = ""), (r.innerHTML = ""));
       for (let r of n)
         if (r.predefined) H(r);
         else {
@@ -1682,7 +1687,7 @@ meet.google.com`.replace(e, ""),
     }
   }
   function f(e) {
-    ["settings", "advanced", "faq"].forEach((o) => {
+    ["settings"].forEach((o) => {
       (document.getElementById(`tab-${o}`).classList.toggle("active", o === e),
         (document.getElementById(`panel-${o}`).style.display =
           o === e ? "" : "none"));
@@ -1727,13 +1732,7 @@ meet.google.com`.replace(e, ""),
       document.getElementById("importFile").addEventListener("change", te),
       document
         .getElementById("tab-settings")
-        .addEventListener("click", () => f("settings")),
-      document
-        .getElementById("tab-advanced")
-        .addEventListener("click", () => f("advanced")),
-      document
-        .getElementById("tab-faq")
-        .addEventListener("click", () => f("faq")));
+        .addEventListener("click", () => f("settings")));
     let n = document.getElementById("split-menu");
     (document.getElementById("split-toggle").addEventListener("click", () => {
       n.hidden = !n.hidden;

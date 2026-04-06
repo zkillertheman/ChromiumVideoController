@@ -11,8 +11,6 @@
       <nav class="header-tabs">
         <img src="../../assets/icons/icon48.png" alt="" class="header-icon" />
         <button id="tab-settings" class="header-tab active">Settings</button>
-        <button id="tab-advanced" class="header-tab">Advanced</button>
-        <button id="tab-faq" class="header-tab">FAQ</button>
       </nav>
       <div class="split-button">
         <button id="save" class="split-primary">Save</button>
@@ -34,7 +32,16 @@
           Value uses seconds for skip and reverse, percent for chapter skip and volume, and 0.1x steps for speed.
           Pause has no value.
         </p>
-        <div id="shortcuts-container"></div>
+        <div class="shortcut-groups">
+          <div class="shortcut-group">
+            <h4>Chapter settings</h4>
+            <div id="chapter-shortcuts-container"></div>
+          </div>
+          <div class="shortcut-group">
+            <h4>Other settings</h4>
+            <div id="other-shortcuts-container"></div>
+          </div>
+        </div>
         <button id="add">Add New</button>
       </section>
 
@@ -62,11 +69,9 @@
           <input id="exclusiveKeys" type="checkbox" />
         </div>
       </section>
-    </div>
 
-    <!-- ============ ADVANCED TAB ============ -->
-    <div id="panel-advanced" style="display: none">
       <section>
+        <h3>Controller</h3>
         <div class="row">
           <label for="controllerOpacity"
             >Controller opacity<br />
@@ -81,6 +86,10 @@
           </label>
           <input id="controllerButtonSize" type="text" value="" />
         </div>
+      </section>
+
+      <section>
+        <h3>Behavior</h3>
         <div class="row">
           <label for="logLevel"
             >Console Log Level<br />
@@ -95,6 +104,10 @@
             <option value="6">Verbose</option>
           </select>
         </div>
+      </section>
+
+      <section>
+        <h3>Site Rules</h3>
         <div class="row">
           <label
             >Site rules<br />
@@ -113,6 +126,10 @@
           <button id="add-site-rule">Add Site Rule</button>
           <div id="siteRulesValidation" class="css-validation"></div>
         </div>
+      </section>
+
+      <section>
+        <h3>Controller CSS</h3>
         <div class="row">
           <label for="controllerCSS"
             >Controller CSS<br />
@@ -134,117 +151,5 @@
 
     <div id="status"></div>
 
-    <!-- ============ FAQ TAB ============ -->
-    <div id="panel-faq" style="display: none">
-      <section>
-        <div id="faq">
-          <ul class="faq-toc">
-            <li><a href="#faq-local">Local files / Incognito</a></li>
-            <li><a href="#faq-disable">Disable on a site</a></li>
-            <li><a href="#faq-keys">Shortcut conflicts</a></li>
-            <li><a href="#faq-position">Controller positioning</a></li>
-            <li><a href="#faq-missing">Controller not showing</a></li>
-            <li><a href="#faq-spa">Speed resets on navigate</a></li>
-            <li><a href="#faq-audio">Audio support</a></li>
-          </ul>
-          <hr />
-
-          <h4 id="faq-local">
-            The speed controls are not showing up for local videos or Incognito mode?
-          </h4>
-          <p>
-            To enable playback of local media (e.g. File &gt; Open File) or Incognito mode, you need
-            to manually grant additional permissions to the extension.
-          </p>
-          <ul>
-            <li>In a new tab, navigate to <code>chrome://extensions</code></li>
-            <li>
-              Find "Video Speed Controller" extension in the list and enable "Allow access to file
-              URLs" and/or "Allow in Incognito".
-            </li>
-          </ul>
-
-          <h4 id="faq-disable">How do I disable the extension on a specific site?</h4>
-          <p>
-            Go to <strong>Advanced &gt; Site rules</strong> and add a rule with the site's domain
-            (e.g. <code>example.com</code>). Check the <strong>Disable</strong> checkbox. The
-            extension will not inject on that site. You can also use regex patterns like
-            <code>/\.edu$/i</code> to match multiple domains.
-          </p>
-
-          <h4 id="faq-keys">A site's keyboard shortcuts conflict with mine. What can I do?</h4>
-          <p>Three options:</p>
-          <ul>
-            <li>
-              <strong>Add a modifier:</strong> In Settings &gt; Shortcuts, add <code>Shift</code>,
-              <code>Ctrl</code>, or <code>Alt</code> to your shortcut keys to create chord
-              combinations the site won't intercept.
-            </li>
-            <li>
-              <strong>Rebind to unused keys:</strong> Change the default key to one the site doesn't
-              use.
-            </li>
-            <li>
-              <strong>Enable exclusive mode:</strong> Turn on
-              <code>Exclusive keyboard shortcuts</code> in Preferences to prevent sites from also
-              handling your VSC shortcut keys.
-            </li>
-          </ul>
-
-          <h4 id="faq-position">
-            The controller overlaps with site controls. How do I reposition it?
-          </h4>
-          <p>
-            Go to <strong>Advanced &gt; Controller CSS</strong>. Add a domain rule targeting
-            <code>vsc-controller</code> using the <code>--vsc-domain</code> CSS variable. Example:
-          </p>
-          <p>
-            <code
-              >:root[style*='--vsc-domain: "example.com"'] vsc-controller { position: relative; top:
-              60px; }</code
-            >
-          </p>
-          <p>
-            You can also drag the controller to a new position on any page. See the existing rules
-            for YouTube, Netflix, etc. as reference.
-          </p>
-
-          <h4 id="faq-missing">The controller is not appearing on a site. Why?</h4>
-          <p>Common causes:</p>
-          <ul>
-            <li>
-              The site is in your <strong>Site rules</strong> with Disable checked &mdash; remove or
-              uncheck it.
-            </li>
-            <li>
-              The site uses Flash or a non-HTML5 player &mdash; the extension only works with native
-              <code>&lt;video&gt;</code> and <code>&lt;audio&gt;</code> elements.
-            </li>
-            <li>
-              <code>Hide controller by default</code> is enabled &mdash; press your display toggle
-              shortcut (default: <code>V</code>) to show it.
-            </li>
-          </ul>
-
-          <h4 id="faq-spa">Speed resets when I navigate on YouTube or similar single-page apps?</h4>
-          <p>
-            YouTube uses SPA navigation &mdash; the page doesn't fully reload, but the player may
-            reinitialize. This build always starts fresh media at <code>1x</code>, so if a site
-            replaces the underlying player you will need to set your speed again.
-          </p>
-
-          <h4 id="faq-audio">Does this work with audio elements, not just video?</h4>
-          <p>
-            Yes. When <code>Audio support</code> is enabled in Preferences (on by default), the
-            controller appears on <code>&lt;audio&gt;</code> elements too. All speed controls and
-            keyboard shortcuts work identically for audio.
-          </p>
-        </div>
-        <div class="row">
-          <button id="about" class="secondary">About Video Speed Controller</button>
-          <button id="feedback" class="secondary">Send Feedback</button>
-        </div>
-      </section>
-    </div>
   </body>
 </html>
