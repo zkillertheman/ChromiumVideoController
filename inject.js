@@ -151,6 +151,8 @@
       "chapterSkip70",
       "chapterSkip80",
       "chapterSkip90",
+      "chapterPrevious",
+      "chapterNext",
       "advance",
       "rewind",
       "louder",
@@ -230,6 +232,22 @@
         keyCode: 57,
         displayKey: "9",
         value: 0.9,
+      },
+      chapterPrevious: {
+        code: "KeyZ",
+        key: 90,
+        keyCode: 90,
+        displayKey: "z",
+        value: 0,
+        modifiers: { shift: !1, ctrl: !0, alt: !1, meta: !1 },
+      },
+      chapterNext: {
+        code: "KeyX",
+        key: 88,
+        keyCode: 88,
+        displayKey: "x",
+        value: 0,
+        modifiers: { shift: !1, ctrl: !0, alt: !1, meta: !1 },
       },
       advance: {
         code: "KeyX",
@@ -433,7 +451,16 @@ meet.google.com`.replace(r, ""),
         AUDIO_MIN_WIDTH: 20,
         AUDIO_MIN_HEIGHT: 20,
       },
-      l = ["pause", "muted", "mark", "jump", "display", "resetSettings"];
+      l = [
+        "pause",
+        "muted",
+        "mark",
+        "jump",
+        "display",
+        "resetSettings",
+        "chapterPrevious",
+        "chapterNext",
+      ];
     ((window.VSC.Constants.LOG_LEVELS = i),
       (window.VSC.Constants.MESSAGE_TYPES = n),
       (window.VSC.Constants.SPEED_LIMITS = s),
@@ -1949,7 +1976,13 @@ meet.google.com`.replace(r, ""),
       );
     }
     runAction(e, t, o) {
-      if (e === "rewind" || e === "advance" || e.startsWith("chapterSkip")) {
+      if (
+        e === "rewind" ||
+        e === "advance" ||
+        e === "chapterPrevious" ||
+        e === "chapterNext" ||
+        e.startsWith("chapterSkip")
+      ) {
         let i = this.resolvePrimaryMediaElement(o);
         return i ? this.executeAction(e, t, i, o) : void 0;
       }
@@ -2022,6 +2055,14 @@ meet.google.com`.replace(r, ""),
         return;
       }
       switch (e) {
+        case "chapterPrevious":
+          (window.VSC.logger.debug("Jump to previous chapter"),
+            this.jumpToPreviousChapter(o));
+          break;
+        case "chapterNext":
+          (window.VSC.logger.debug("Jump to next chapter"),
+            this.jumpToNextChapter(o));
+          break;
         case "rewind":
           (window.VSC.logger.debug("Rewind"), this.seek(o, -t));
           break;
@@ -2173,6 +2214,63 @@ meet.google.com`.replace(r, ""),
           a
         );
       });
+    }
+    jumpToNextChapter(e) {
+      return this.jumpToChapterBoundary(e, "next");
+    }
+    jumpToPreviousChapter(e) {
+      return this.jumpToChapterBoundary(e, "previous");
+    }
+    jumpToChapterBoundary(e, t) {
+      return window.VSC.logger.withContext(e, () => {
+        if (!e || typeof e.currentTime != "number") {
+          window.VSC.logger.warn("jumpToChapterBoundary called without media element");
+          return !1;
+        }
+        let o = this.getChapterPosition(e);
+        if (!o) {
+          window.VSC.logger.warn("Unable to determine chapter boundaries");
+          return !1;
+        }
+        let i =
+          t === "next"
+            ? o.nextStart
+            : o.currentTime - o.currentStart <= 10
+              ? o.previousStart
+              : o.currentStart;
+        let n = this.applyNativeSeek(e, i);
+        return (
+          n &&
+            (window.VSC.logger.debug(
+              `Seeked media to ${i.toFixed(2)}s via ${t} chapter`,
+            ),
+            e.vsc?.div && this.flashController(e.vsc.div)),
+          n
+        );
+      });
+    }
+    getChapterPosition(e) {
+      let t = this.getSeekBounds(e),
+        o = t.max - t.min;
+      if (!Number.isFinite(t.min) || !Number.isFinite(t.max) || o <= 0)
+        return null;
+      let i = o / 10;
+      if (!Number.isFinite(i) || i <= 0) return null;
+      let n = Math.min(Math.max(e.currentTime, t.min), t.max),
+        s = Math.min(Math.floor((n - t.min) / i), 9),
+        a = Math.max(0, s),
+        l = t.min + i * a,
+        d = a > 0 ? t.min + i * (a - 1) : t.min,
+        g = a < 9 ? t.min + i * (a + 1) : t.max;
+      return {
+        min: t.min,
+        max: t.max,
+        currentTime: n,
+        currentIndex: a,
+        currentStart: l,
+        previousStart: d,
+        nextStart: Math.min(Math.max(g, t.min), t.max),
+      };
     }
     computeSeekTarget(e, t) {
       let o = Number.isFinite(e.currentTime) ? e.currentTime : 0,

@@ -12,6 +12,7 @@ custom shortcuts without depending on site-specific players.
 - Playback speed control from very slow to very fast
 - Forward and reverse seeking by configurable time steps
 - Chapter skip shortcuts that jump directly to 0% through 90% of a clip
+- Previous/next chapter shortcuts that follow the current 10-part chapter position
 - Audio and video support
 - Marker set/jump workflow for quick revisits
 - Volume increase and decrease shortcuts
@@ -42,6 +43,8 @@ schema updates can be migrated when the extension loads.
 - `D` increases playback speed
 - `Z` rewinds by 10 seconds
 - `X` advances by 10 seconds
+- `Ctrl+Z` jumps to the start of the current or previous chapter
+- `Ctrl+X` jumps to the next chapter
 - `Shift+Space` pauses or resumes playback
 - `0` jumps to the start of the media
 - `1` through `9` jump to 10% through 90% of the media
@@ -66,6 +69,11 @@ fixed seek amounts.
 
 Each chapter skip is stored as its own binding, so any one of them can be
 rebound independently in the settings UI.
+
+The chapter navigation shortcuts use the same 10-part chapter model. `Ctrl+X`
+jumps to the next chapter boundary. `Ctrl+Z` jumps to the start of the current
+chapter, unless playback is already within 10 seconds of that boundary, in
+which case it jumps to the previous chapter boundary instead.
 
 ## Loading the Extension in Opera
 
