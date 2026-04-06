@@ -7,7 +7,7 @@
   "manifest_version": 3,
   "minimum_chrome_version": "111",
   "description": "Speed up, slow down, advance and rewind HTML5 audio/video with shortcuts",
-  "homepage_url": "https://example.com",
+  "homepage_url": "https://github.com/zkillertheman/ChromiumVideoController",
   "icons": {
     "16": "assets/icons/icon16.png",
     "48": "assets/icons/icon48.png",
