@@ -1,65 +1,81 @@
 # Privacy Policy
 
-**Last updated: 2026-05-03**
+Last updated: 2026-05-03
 
-## Overview
+This Privacy Policy explains how Video Controller (the "Extension") handles data.
 
-Video Controller is a browser extension for Opera and Chromium-based browsers that
-provides keyboard-driven control over HTML5 audio and video elements. This policy
-describes what data the extension accesses, what it stores, and how it is used.
+## Summary
 
-## Data Collection
+- The Extension does not collect personal data for the developer.
+- The Extension does not sell data.
+- The Extension does not run analytics or tracking beacons.
+- Settings are stored in browser extension storage and may sync through your browser account if sync is enabled.
 
-Video Controller does **not** collect, transmit, or share any personal data.
+## What Data the Extension Uses
 
-- No analytics or telemetry are gathered.
-- No usage data is sent to any server or third party.
-- No information about the pages you visit or the media you watch is recorded or
-  stored beyond what is described below.
+The Extension processes only the data needed to provide video/audio controls on pages you visit.
 
-## Data Storage
+### 1. Extension settings
 
-The extension uses `chrome.storage.sync` solely to save your personal settings:
+The Extension stores user preferences such as:
 
-- Keyboard shortcut bindings
-- Playback seek step sizes
-- Per-site rules and controller behavior preferences
-- Controller appearance and CSS customizations
+- Keyboard shortcuts
+- Site-specific rules
+- UI/controller options
+- Enable/disable state and related configuration
 
-These settings are stored locally in your browser and, if you are signed into a
-Chromium-based browser with sync enabled, may be synchronized across your own
-devices by the browser's built-in sync service. This synchronization is handled
-entirely by the browser; Video Controller does not interact with any external
-server.
+Storage location:
 
-No settings contain personal information, browsing history, or media content.
+- `chrome.storage.sync` (or equivalent Chromium sync storage)
 
-## Permissions
+If browser sync is enabled, these settings may be synced by your browser vendor across your signed-in devices.
 
-The extension requests the following permission:
+### 2. Page and media context (runtime only)
 
-| Permission | Reason |
-|---|---|
-| `storage` | Save and load your shortcut and behavior settings |
+To work, the Extension reads page/media state at runtime (for example current media time, playback rate, and media element availability).
 
-Content scripts are injected into web pages to discover HTML5 media elements and
-attach playback controls. These scripts do not read, record, or transmit any page
-content, form data, or user input beyond the keyboard shortcuts used to trigger
-playback actions.
+- This runtime data is used only to execute requested controls.
+- It is not transmitted to the developer.
+- It is not sold or used for advertising.
 
-## Third Parties
+## Permissions and Why They Are Needed
 
-Video Controller does not integrate with any third-party services, APIs, or
-advertising networks. No data of any kind is shared with third parties.
+- `storage`: Save and load Extension settings.
+- Content script access on `http://*/*`, `https://*/*`, and `file:///*`: Detect and control HTML5 media on pages where you use the Extension.
+
+Excluded domains are defined in the manifest where applicable.
+
+## Data Sharing
+
+The developer does not receive your settings or media activity data from the Extension.
+
+Possible third-party handling outside developer control:
+
+- Browser sync services may store synchronized extension settings when sync is enabled.
+- Browser/extension store update infrastructure may process technical data needed to deliver extension updates.
+
+## Data Retention and Deletion
+
+- Settings remain in extension storage until you change or clear them.
+- You can remove stored data by:
+  - Resetting/clearing Extension settings
+  - Removing the Extension from your browser
+  - Clearing browser extension storage/sync data through browser settings
+
+## Security
+
+The project aims to minimize data use and retain only required settings. No privacy policy can guarantee absolute security.
+
+## Children
+
+The Extension is not specifically directed to children under 13.
 
 ## Changes to This Policy
 
-If this policy changes in a future release, the updated version will be committed
-to this repository. The **Last updated** date at the top of this file will reflect
-when the policy was last revised.
+This policy may be updated when features or data practices change. The latest version will be kept in this repository.
 
 ## Contact
 
-This project is maintained at
-[github.com/zkillertheman/ChromiumVideoController](https://github.com/zkillertheman/ChromiumVideoController).
-Questions or concerns can be raised by opening an issue in that repository.
+Project homepage:
+
+- https://github.com/zkillertheman/ChromiumVideoController
